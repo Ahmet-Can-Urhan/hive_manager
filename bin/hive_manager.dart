@@ -1,3 +1,6 @@
-void main(List<String> arguments) {
-  print('Hello world!');
+import 'package:hive_manager/cli/command_runner.dart';
+
+Future<void> main(List<String> args) async 
+{
+  await CommandRunner().run(args);  
 }
