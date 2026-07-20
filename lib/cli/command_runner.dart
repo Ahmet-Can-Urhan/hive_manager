@@ -1,8 +1,11 @@
 import 'package:args/args.dart';
+import 'package:hive_manager/services/hive_repository.dart';
+import 'package:hive_manager/commands/list_command.dart';
 
 class CommandRunner 
 {
   final ArgParser _parser = ArgParser()
+  
   ..addOption(
     'db',
     abbr: 'd',
@@ -22,20 +25,27 @@ class CommandRunner
 
   Future<void> run(List<String> arguments) async 
   {
-    
     ArgResults results;
     try 
     {
       results = _parser.parse(arguments);
     } on FormatException catch (e) 
     {
+      print(e.message);
       _printUsage();
-      print(_parser.usage);
+     
       return;
     }
+    await _executeCommand(results);
+    
+  }
+
+  
+  Future<void> _executeCommand( ArgResults results) async 
+  {
+  
     if (results['help'] as bool) {
       _printUsage();
-      print(_parser.usage);
       return;
     }
 
@@ -52,6 +62,27 @@ class CommandRunner
         print('Error: Missing command.');
         return;
     }
+    final repository =  HiveRepository();
+    try {
+    await repository.open(databasePath: results['db'] as String, boxName: results['box'] as String);
+    final command = results.rest.first;
+
+    switch (command) 
+    {
+      case 'list':
+        await ListCommand(repository).execute();
+        break;
+      default:
+        print("Unknown command: '$command'.");
+    }
+    
+    } 
+    finally 
+    {
+      await repository.close();
+    }
+
+
   }
 
   void _printUsage() 
