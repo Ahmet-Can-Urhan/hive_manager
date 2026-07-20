@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-class HiveRepository 
+class HiveRepository
 {
   late final Box<dynamic> _box;
 
