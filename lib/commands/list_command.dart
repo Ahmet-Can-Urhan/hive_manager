@@ -3,16 +3,16 @@ import 'package:hive_manager/services/hive_repository.dart';
 
 class ListCommand implements Command 
 {
-  final HiveRepository service;
+  final HiveRepository repository;
 
-  ListCommand(this.service);
+  ListCommand(this.repository);
 
   @override 
   Future<void> execute() async 
   {
-    for (final key in service.keys()) 
+    for (final key in repository.keys()) 
     {
-      print('$key = ${service.get(key)}');
+      print('$key = ${repository.get(key)}');
     }
   }
 }

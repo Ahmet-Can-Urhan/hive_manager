@@ -1,6 +1,8 @@
 import 'package:args/args.dart';
+import 'package:hive_manager/commands/get_command.dart';
 import 'package:hive_manager/services/hive_repository.dart';
 import 'package:hive_manager/commands/list_command.dart';
+import 'package:hive_manager/utils/key_parser.dart';
 
 class CommandRunner 
 {
@@ -72,6 +74,10 @@ class CommandRunner
       case 'list':
         await ListCommand(repository).execute();
         break;
+      case 'get': 
+        final key = parseKey(results.rest.last);
+        await GetCommand(repository,key).execute();
+        
       default:
         print("Unknown command: '$command'.");
     }

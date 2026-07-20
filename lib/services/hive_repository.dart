@@ -23,7 +23,13 @@ class HiveRepository
     {
       return _box.get(key);
     }
-
+    dynamic getAll() 
+    {
+      for (int i = 0; i < _box.length; i++)  
+      {
+        get(i);
+      }
+    }
     Future<void> put(dynamic key, dynamic value) async 
     {
       await _box.put(key,value);
